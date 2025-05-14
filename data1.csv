@@ -2,3 +2,5 @@ id,email,name,department,hours_worked,salary
 1,alice@example.com,Alice,Marketing,160,50
 2,bob@example.com,Bob,Sales,150,60
 3,charlie@example.com,Charlie,IT,170,55
+4,john@example.com,John,IT,130,70
+5,emily@example.com,Emily,HR,140,65

@@ -1,10 +1,28 @@
 import argparse
 import json
 import sys
+from collections import defaultdict
 
-from employees.employee import Employee
+from tabulate import tabulate
+
 from readers.reader import CSVReader
 from reports.reports import ReportFactory
+
+
+def print_grouped_payouts(payouts):
+    grouped = defaultdict(list)
+    for row in payouts:
+        grouped[row["department"]].append(row)
+    for dept, rows in grouped.items():
+        print(f"\nОтдел: {dept}")
+        print(tabulate(
+            rows,
+            headers={"id": "ID", "name": "Имя", "payout": "Выплата"},
+            tablefmt="fancy_grid",
+            stralign="center",
+            numalign="center"
+        ))
+
 
 def main():
     parser = argparse.ArgumentParser(description="Генератор отчетов по сотрудникам")
@@ -27,7 +45,11 @@ def main():
         sys.exit(1)
 
     result = report.generate(employees)
-    print(json.dumps(result, ensure_ascii=False, indent=2))
+    if "payouts" in result:
+        print_grouped_payouts(result["payouts"])
+    else:
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+
 
 if __name__ == "__main__":
     main()
